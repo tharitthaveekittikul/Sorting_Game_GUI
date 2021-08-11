@@ -4,6 +4,8 @@
      
 String board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
 String character[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
+
+
 void setup(){
   size(500,500);
   textSize(100);
@@ -85,6 +87,8 @@ void draw(){
   rect(370,330,120,160);
   fill(0);
   text(board[2][3],395,440);
+  
+ switch_position() ;
 }
 
 void random_board(){
@@ -93,7 +97,6 @@ void random_board(){
   boardStr.append(character[i]);
   }
   boardStr.shuffle();
-  print(boardStr);
   String rd_board[] = boardStr.array();
   int s = 0;
   for (int i = 0; i < 3; i++){
@@ -102,4 +105,39 @@ void random_board(){
       s += 1;
     }
   }
+}
+void switch_position(){
+  String temp = "X";
+  int mY = mouseX / 120;
+  int mX = mouseY / 160;
+  if(mousePressed){
+    try{
+      if(mX+1 <= 2 && board[mX+1][mY] == " "){
+        temp = board[mX][mY];
+        board[mX][mY] = board[mX+1][mY];
+        board[mX+1][mY] = temp;
+      }
+      else if(mX-1 >= 0 && board[mX-1][mY] == " "){
+        temp = board[mX][mY];
+        board[mX][mY] = board[mX-1][mY];
+        board[mX-1][mY] = temp;
+      }
+      
+      else if(mY+1 <= 3 && board[mX][mY+1] == " "){
+        temp = board[mX][mY];
+        board[mX][mY] = board[mX][mY+1];
+        board[mX][mY+1] = temp;
+      }
+      
+      else if(mY-1 >= 0 && board[mX][mY-1] == " "){
+        temp = board[mX][mY];
+        board[mX][mY] = board[mX][mY-1];
+        board[mX][mY-1] = temp;
+      }
+    }
+    catch(Exception e){
+      
+    }
+  }
+  
 }
