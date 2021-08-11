@@ -1,10 +1,7 @@
-//char p0_0 = 'A',p0_1 = 'B',p0_2 = 'C',p0_3 = 'D',
-//     p1_0 = 'E',p1_1 = 'F',p1_2 = 'G',p1_3 = 'H',
-//     p2_0 = 'I',p2_1 = 'J',p2_2 = 'K',p2_3 = ' ';
-     
+import java.util.Arrays;
+
 String board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
 String character[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
-
 
 void setup(){
   size(500,500);
@@ -13,6 +10,7 @@ void setup(){
 }
 
 void draw(){
+  
   // rect 1st row
   // p0_0
   fill(255);             // while color
@@ -87,8 +85,9 @@ void draw(){
   rect(370,330,120,160);
   fill(0);
   text(board[2][3],395,440);
+  switch_position();
+  check_winner();
   
- switch_position() ;
 }
 
 void random_board(){
@@ -97,6 +96,7 @@ void random_board(){
   boardStr.append(character[i]);
   }
   boardStr.shuffle();
+  //print(boardStr);
   String rd_board[] = boardStr.array();
   int s = 0;
   for (int i = 0; i < 3; i++){
@@ -106,6 +106,7 @@ void random_board(){
     }
   }
 }
+
 void switch_position(){
   String temp = "X";
   int mY = mouseX / 120;
@@ -140,4 +141,17 @@ void switch_position(){
     }
   }
   
+}
+
+void check_winner(){
+  String sorted_board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
+  if(Arrays.deepEquals(board,sorted_board)){
+    fill(255);
+    rect(0,0,500,500);
+    fill(0);
+    text("WIN!!",130,250);
+    if(mousePressed){
+      exit();
+    }
+  }
 }
