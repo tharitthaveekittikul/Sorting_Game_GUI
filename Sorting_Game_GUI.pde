@@ -1,11 +1,13 @@
 import java.util.Arrays;
 
 String board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
+String save_board[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
+String sorted_board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
 
 void setup(){
   size(500,500);
   textSize(100);
-  random_board();
+  load_game();
 }
 
 void draw(){
@@ -113,38 +115,38 @@ void switch_position(){
   int mX = mouseY / 160;
   if(mousePressed){
     try{
-      if(mX+1 <= 2 && board[mX+1][mY] == " "){
+      if(mX+1 <= 2 && board[mX+1][mY].equals(" ")){
         temp = board[mX][mY];
         board[mX][mY] = board[mX+1][mY];
         board[mX+1][mY] = temp;
       }
-      else if(mX-1 >= 0 && board[mX-1][mY] == " "){
+      else if(mX-1 >= 0 && board[mX-1][mY].equals(" ")){
         temp = board[mX][mY];
         board[mX][mY] = board[mX-1][mY];
         board[mX-1][mY] = temp;
       }
       
-      else if(mY+1 <= 3 && board[mX][mY+1] == " "){
+      else if(mY+1 <= 3 && board[mX][mY+1].equals(" ")){
         temp = board[mX][mY];
         board[mX][mY] = board[mX][mY+1];
         board[mX][mY+1] = temp;
       }
       
-      else if(mY-1 >= 0 && board[mX][mY-1] == " "){
+      else if(mY-1 >= 0 && board[mX][mY-1].equals(" ")){
         temp = board[mX][mY];
         board[mX][mY] = board[mX][mY-1];
         board[mX][mY-1] = temp;
       }
+      save_game();
     }
+    
     catch(Exception e){
       
     }
   }
-  
 }
 
 void check_winner(){
-  String sorted_board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
   if(Arrays.deepEquals(board,sorted_board)){
     fill(255);
     rect(0,0,500,500);
@@ -154,4 +156,36 @@ void check_winner(){
       exit();
     }
   }
+}
+
+void save_game(){
+  int k = 0;
+  for(int i = 0 ; i < 3; i++){
+    for(int j = 0; j < 4; j++){
+      save_board[k] = board[i][j];
+      k++;
+    }
+  }
+  
+  saveStrings("save.txt",save_board);
+}
+
+void load_game(){
+  try{
+    String save_board[] = loadStrings("save.txt");
+    int k = 0;
+    for(int i = 0; i < 3; i++){
+      for(int j = 0; j < 4; j++){
+        board[i][j] = save_board[k];
+        k++;
+      }
+    }
+    if(Arrays.deepEquals(board,sorted_board)){
+      random_board();
+    } 
+  }
+  catch(Exception e){
+    random_board();
+    save_game();
+  } 
 }
