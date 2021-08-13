@@ -1,7 +1,6 @@
 import java.util.Arrays;
 
 String board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
-int i ;
 
 void setup(){
   size(500,500);
@@ -93,14 +92,14 @@ void draw(){
 void random_board(){
   String character[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
   StringList boardStr = new StringList(13);
-  for (i = 0; i < 12; i++){
+  for (int i = 0; i < 12; i++){
   boardStr.append(character[i]);
   }
   boardStr.shuffle();
   //print(boardStr);
   String rd_board[] = boardStr.array();
   int s = 0;
-  for (i = 0; i < 3; i++){
+  for (int i = 0; i < 3; i++){
     for (int j = 0; j < 4; j++){
       board[i][j] = rd_board[s];
       s += 1;
