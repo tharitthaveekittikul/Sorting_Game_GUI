@@ -3,8 +3,8 @@ import java.util.Arrays;
 String board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
 String save_board[] = {"A","B","C","D","E","F","G","H","I","J","K"," "};
 String sorted_board[][] = {{"A","B","C","D"},{"E","F","G","H"},{"I","J","K"," "}};
-
-void setup(){
+XML xml;
+void setup(){  
   size(500,500);
   textSize(100);
   load_game();
@@ -159,24 +159,46 @@ void check_winner(){
 }
 
 void save_game(){
-  int k = 0;
-  for(int i = 0 ; i < 3; i++){
-    for(int j = 0; j < 4; j++){
-      save_board[k] = board[i][j];
-      k++;
+  try{
+    XML[] save_board = xml.getChildren("char");
+    int k = 0;
+    for(int i = 0; i < 3; i++){
+      for(int j = 0; j < 4; j++){
+        save_board[k].setContent(board[i][j]);      
+        k++;
+      }  
     }
+    saveXML(xml,"save.xml");
+  }
+  catch(Exception e){
+    //String s =  "<sorting_game><char>A</char><char>B</char><char>C</char><char>D</char><char>E</char><char>F</char><char>G</char><char>H</char><char>I</char><char>J</char><char>K</char><char> </char></sorting_game>";
+    int k = 0;
+    for(int i = 0 ; i < 3; i++){
+      for(int j = 0; j < 4; j++){
+        save_board[k] = board[i][j];
+        k++;
+      }
+    }
+    String xml_board = "";
+    xml_board = xml_board + "<sorting_game>";
+    for(int i = 0 ; i < 12; i++){
+      xml_board = xml_board + "<char>" + save_board[i] + "</char>";
+    }
+    xml_board = xml_board + "</sorting_game>";  
+    XML xmlsave = parseXML(xml_board);
+    saveXML(xmlsave,"save.xml");
   }
   
-  saveStrings("save.txt",save_board);
 }
 
 void load_game(){
   try{
-    String save_board[] = loadStrings("save.txt");
+    xml = loadXML("save.xml");
+    XML[] save_board = xml.getChildren("char");
     int k = 0;
     for(int i = 0; i < 3; i++){
       for(int j = 0; j < 4; j++){
-        board[i][j] = save_board[k];
+        board[i][j] = save_board[k].getContent();
         k++;
       }
     }
@@ -187,5 +209,5 @@ void load_game(){
   catch(Exception e){
     random_board();
     save_game();
-  } 
+  }
 }
