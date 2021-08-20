@@ -160,18 +160,19 @@ void check_winner(){
 
 void save_game(){
   try{
-    XML[] save_board = xml.getChildren("char");
-    int k = 0;
     for(int i = 0; i < 3; i++){
+      String row = "";
       for(int j = 0; j < 4; j++){
-        save_board[k].setContent(board[i][j]);      
-        k++;
-      }  
+        row = row + board[i][j];
+      }
+      XML xml_board = xml.getChild("row" + String.valueOf(i));
+      xml_board.setContent(row);
+      
     }
     saveXML(xml,"save.xml");
   }
   catch(Exception e){
-    //String s =  "<sorting_game><char>A</char><char>B</char><char>C</char><char>D</char><char>E</char><char>F</char><char>G</char><char>H</char><char>I</char><char>J</char><char>K</char><char> </char></sorting_game>";
+    //String s =  "<sorting_game><Map><row1>ABCD</row1><row2>EFGH</row2><row3>IJK </row3></Map></sorting_game>";
     int k = 0;
     for(int i = 0 ; i < 3; i++){
       for(int j = 0; j < 4; j++){
@@ -181,9 +182,11 @@ void save_game(){
     }
     String xml_board = "";
     xml_board = xml_board + "<sorting_game>";
-    for(int i = 0 ; i < 12; i++){
-      xml_board = xml_board + "<char>" + save_board[i] + "</char>";
-    }
+    xml_board = xml_board + "<Map>";
+    xml_board = xml_board + "<row1>" + save_board[0] + save_board[1] + save_board[2] + save_board[3] +"</row1>";
+    xml_board = xml_board + "<row2>" + save_board[4] + save_board[5] + save_board[6] + save_board[7] +"</row2>";
+    xml_board = xml_board + "<row3>" + save_board[8] + save_board[9] + save_board[10] + save_board[11] +"</row3>";
+    xml_board = xml_board + "</Map>";
     xml_board = xml_board + "</sorting_game>";  
     XML xmlsave = parseXML(xml_board);
     saveXML(xmlsave,"save.xml");
@@ -194,13 +197,13 @@ void save_game(){
 void load_game(){
   try{
     xml = loadXML("save.xml");
-    XML[] save_board = xml.getChildren("char");
-    int k = 0;
+    XML[] save_board = xml.getChildren("Map");
     for(int i = 0; i < 3; i++){
+      XML[] xml_board = save_board[0].getChildren("row" + String.valueOf(i+1));
+      String[] content = xml_board[0].getContent().split("");
       for(int j = 0; j < 4; j++){
-        board[i][j] = save_board[k].getContent();
-        k++;
-      }
+        board[i][j] = content[j];
+      }      
     }
     if(Arrays.deepEquals(board,sorted_board)){
       random_board();
