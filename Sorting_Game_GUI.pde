@@ -159,38 +159,24 @@ void check_winner(){
 }
 
 void save_game(){
-  try{
-    for(int i = 0; i < 3; i++){
-      String row = "";
-      for(int j = 0; j < 4; j++){
-        row = row + board[i][j];
-      }
-      XML xml_board = xml.getChild("row" + String.valueOf(i));
-      xml_board.setContent(row);
-      
+  //String s =  "<sorting_game><Map><row1>ABCD</row1><row2>EFGH</row2><row3>IJK </row3></Map></sorting_game>";
+  int k = 0;
+  for(int i = 0 ; i < 3; i++){
+    for(int j = 0; j < 4; j++){
+      save_board[k] = board[i][j];
+      k++;
     }
-    saveXML(xml,"save.xml");
   }
-  catch(Exception e){
-    //String s =  "<sorting_game><Map><row1>ABCD</row1><row2>EFGH</row2><row3>IJK </row3></Map></sorting_game>";
-    int k = 0;
-    for(int i = 0 ; i < 3; i++){
-      for(int j = 0; j < 4; j++){
-        save_board[k] = board[i][j];
-        k++;
-      }
-    }
-    String xml_board = "";
-    xml_board = xml_board + "<sorting_game>";
-    xml_board = xml_board + "<Map>";
-    xml_board = xml_board + "<row1>" + save_board[0] + save_board[1] + save_board[2] + save_board[3] +"</row1>";
-    xml_board = xml_board + "<row2>" + save_board[4] + save_board[5] + save_board[6] + save_board[7] +"</row2>";
-    xml_board = xml_board + "<row3>" + save_board[8] + save_board[9] + save_board[10] + save_board[11] +"</row3>";
-    xml_board = xml_board + "</Map>";
-    xml_board = xml_board + "</sorting_game>";  
-    XML xmlsave = parseXML(xml_board);
-    saveXML(xmlsave,"save.xml");
-  }
+  String xml_board = "";
+  xml_board = xml_board + "<sorting_game>";
+  xml_board = xml_board + "<Map>";
+  xml_board = xml_board + "<row1>" + save_board[0] + save_board[1] + save_board[2] + save_board[3] +"</row1>";
+  xml_board = xml_board + "<row2>" + save_board[4] + save_board[5] + save_board[6] + save_board[7] +"</row2>";
+  xml_board = xml_board + "<row3>" + save_board[8] + save_board[9] + save_board[10] + save_board[11] +"</row3>";
+  xml_board = xml_board + "</Map>";
+  xml_board = xml_board + "</sorting_game>";  
+  XML xmlsave = parseXML(xml_board);
+  saveXML(xmlsave,"save.xml");
   
 }
 
